@@ -1,0 +1,99 @@
+﻿@using umbraco_clean_demo.Web.Models.ViewModels
+
+@model MigrateModel
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container form-container">
+	<h2 class="text-center">Database Migration</h2>
+	<form id="formMigrate" role="form">
+		@Html.AntiForgeryToken()
+		<div class="mb-3">
+			<label for="ServerName" class="form-label">Server Name:</label>
+			<input type="text"
+				   class="form-control"
+				   asp-for="ServerName" />
+			<span asp-validation-for="ServerName" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label for="DatabaseName" class="form-label">Database Name:</label>
+			<input type="text"
+				   class="form-control"
+				   asp-for="DatabaseName" />
+			<span asp-validation-for="DatabaseName" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label for="DBUserName" class="form-label">User Name:</label>
+			<input type="text"
+				   class="form-control"
+				   asp-for="DBUserName" />
+			<span asp-validation-for="DBUserName" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label for="DBPassword" class="form-label">Password:</label>
+			<input type="password"
+				   class="form-control"
+				   asp-for="DBPassword" />
+			<span asp-validation-for="DBPassword" class="text-danger"></span>
+		</div>
+
+		<div class="text-center">
+			<button id="btnMigrate" class="btn btn-primary w-100" type="button" onclick="PostData()">Migrate</button>
+			<button id="btnSpin" class="btn btn-primary w-100" type="button" disabled style="display:none">
+				<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+				Now Loading...
+			</button>
+		</div>
+	</form>
+	<div class="text-center mt-3 mb-3">
+		<button class="btn btn-secondary w-100">
+			<a href="/TH/Migrate.Data" target="_self" class="text-white">Back Migrate</a>
+		</button>
+	</div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$.fn.serializeObject = function () {
+			var o = {};
+			var disabledInput = this.find(':input:disabled').removeAttr('disabled')
+			var a = this.find('input[name],select[name],textarea[name],input[type=file]').not('input[type=hidden]').serializeArray();
+
+			$.each(a, function () {
+				if (o[this.name]) {
+					if (!o[this.name].push) {
+						o[this.name] = [o[this.name]];
+					}
+					o[this.name].push(this.value || '');
+				} else {
+					o[this.name] = this.value || '';
+				}
+			});
+			disabledInput.attr('disabled', 'disabled');
+			return o;
+		};
+	});
+
+	function PostData() {
+		const url = '@Url.Content("~/migrate/submit")';
+		const data = $('#formMigrate').serializeObject();
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: data,
+			headers: {
+				'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+			},
+			success: function (response) {
+				console.log(response.message);
+			},
+			error: function (xhr, status, error) {
+				AlertError(response.message);
+				ShowBtnMigrate(true);
+				console.log("Error: " + error);
+			}
+		});
+	}
+</script>

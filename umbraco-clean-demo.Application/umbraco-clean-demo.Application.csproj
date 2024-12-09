@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\umbraco-clean-demo.Domain\umbraco-clean-demo.Domain.csproj" />
+    <ProjectReference Include="..\umbraco-clean-demo.Infrastructure\umbraco-clean-demo.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
