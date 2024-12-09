@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\umbraco-clean-demo.Application\umbraco-clean-demo.Application.csproj" />
     <ProjectReference Include="..\umbraco-clean-demo.Domain\umbraco-clean-demo.Domain.csproj" />
   </ItemGroup>
 

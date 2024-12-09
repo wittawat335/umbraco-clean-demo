@@ -26,9 +26,9 @@ app.UseUmbraco()
     });
 
 // ลงทะเบียนเส้นทางใหม่
-app.MapControllerRoute(
-	name: "MigrateRoute",
-	pattern: "migrate/{action=Index}",
-	defaults: new { controller = "Migrate" });
+//app.MapControllerRoute(
+//	name: "MigrateRoute",
+//	pattern: "migrate/{action=Index}",
+//	defaults: new { controller = "Migrate" });
 
 await app.RunAsync();

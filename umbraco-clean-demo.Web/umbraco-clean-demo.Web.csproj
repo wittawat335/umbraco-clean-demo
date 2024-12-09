@@ -15,8 +15,12 @@
     <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
     <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="72.1.0.3" />
     <ProjectReference Include="..\umbraco-clean-demo.Application\umbraco-clean-demo.Application.csproj" />
-    <ProjectReference Include="..\umbraco-clean-demo.Infrastructure\umbraco-clean-demo.Infrastructure.csproj" />
     <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="72.1.0.3" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
 
   <PropertyGroup>
