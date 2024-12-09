@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\umbraco-clean-demo.Application\umbraco-clean-demo.Application.csproj" />
     <ProjectReference Include="..\umbraco-clean-demo.Domain\umbraco-clean-demo.Domain.csproj" />
   </ItemGroup>

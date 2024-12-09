@@ -23,6 +23,12 @@ app.UseUmbraco()
         u.UseInstallerEndpoints();
         u.UseBackOfficeEndpoints();
         u.UseWebsiteEndpoints();
-    }); 
+    });
+
+// ลงทะเบียนเส้นทางใหม่
+app.MapControllerRoute(
+	name: "MigrateRoute",
+	pattern: "migrate/{action=Index}",
+	defaults: new { controller = "Migrate" });
 
 await app.RunAsync();
