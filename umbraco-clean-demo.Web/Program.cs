@@ -1,3 +1,6 @@
+using umbraco_clean_demo.Application;
+using umbraco_clean_demo.Infrastructure;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.CreateUmbracoBuilder()
@@ -5,7 +8,9 @@ builder.CreateUmbracoBuilder()
     .AddWebsite()
     .AddDeliveryApi()
     .AddComposers()
-    .Build();
+	.Build();
+
+builder.Services.InjectServices().InjectInfra();
 
 WebApplication app = builder.Build();
 
@@ -25,7 +30,6 @@ app.UseUmbraco()
         u.UseWebsiteEndpoints();
     });
 
-//ลงทะเบียนเส้นทางใหม่
 app.MapControllerRoute(
     name: "MigrateRoute",
     pattern: "migrate/{action=Index}",
