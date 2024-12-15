@@ -7,6 +7,7 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Website.Controllers;
 using umbraco_clean_demo.Domain.Interfaces;
+using umbraco_clean_demo.Infrastructure.Utilities;
 using umbraco_clean_demo.Web.Models.ViewModels;
 
 namespace umbraco_clean_demo.Web.Controllers.Surface;
@@ -15,6 +16,7 @@ namespace umbraco_clean_demo.Web.Controllers.Surface;
 public class MigrateController : SurfaceController
 {
 	private readonly IMigrateRepository _repository;
+	Commons cm = new Commons();	
 
 	public MigrateController(
 		IUmbracoContextAccessor umbracoContextAccessor, 
@@ -33,6 +35,9 @@ public class MigrateController : SurfaceController
 	public IActionResult Index()
 	{
 		var model = new MigrateModel();
+		var listMigrate = cm.GetMigrateTypes();
+		if (listMigrate.Count > 0) ViewBag.listMigrate = listMigrate;
+
 		return View(model);
 	}
 

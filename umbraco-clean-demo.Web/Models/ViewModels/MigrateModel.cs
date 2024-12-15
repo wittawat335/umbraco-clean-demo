@@ -10,8 +10,8 @@
 
 		public string DBPassword { get; set; } = string.Empty;
 
-		public string SelectedMigrateType { get; set; } = string.Empty;
+		public string SelectedMigrateType { get; set; } 
 
-		public string SelectedPageType { get; set; } = string.Empty;
+		public string SelectedPageType { get; set; } 
 	}
 }

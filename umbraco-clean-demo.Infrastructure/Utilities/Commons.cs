@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Web.Mvc;
 
-namespace umbraco_clean_demo.Infrastructure.Utilities
+namespace umbraco_clean_demo.Infrastructure.Utilities;
+
+public class Commons
 {
-	internal class Commons
+	public List<SelectListItem> GetMigrateTypes()
 	{
+		var list = new List<SelectListItem>{
+				new SelectListItem { Value = "Localization", Text = "Localization" },
+				new SelectListItem { Value = "User", Text = "User" },
+				new SelectListItem { Value = "AddUserToSite", Text = "AddUserToSite" },
+				new SelectListItem { Value = "Role", Text = "Role" },
+				new SelectListItem { Value = "DeleteCustomtable", Text = "Delete Data Customtable" },
+				new SelectListItem { Value = "InsertCustomtable", Text = "Insert Data Customtable" },
+				new SelectListItem { Value = "PageType", Text = "Page Type" }
+			};
+		return list;
 	}
 }
