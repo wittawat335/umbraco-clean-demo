@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Data.SqlClient;
+using System.Web.Mvc;
+using umbraco_clean_demo.Domain.Entities;
 
 namespace umbraco_clean_demo.Infrastructure.Utilities;
 
@@ -17,4 +19,18 @@ public class Commons
 			};
 		return list;
 	}
+
+	public string GetConnectionString(MigrateModel model)
+	{
+		string connectionString = new SqlConnectionStringBuilder
+		{
+			DataSource = model.ServerName,
+			InitialCatalog = model.DatabaseName,
+			UserID = model.DBUserName,
+			Password = model.DBPassword
+		}.ConnectionString;
+
+		return connectionString;
+	}
+
 }

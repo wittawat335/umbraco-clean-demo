@@ -2,7 +2,7 @@
 
 public interface IGenericRepository<T> where T : class
 {
-	Task<List<T>> GetAllAsync();
+	Task<List<T>> GetAllAsync(string tableName, string connectionString);
 	Task<T> GetByIdAsync(object id);
 	Task<int> InsertAsync(T entity);
 	Task<int> UpdateAsync(T entity);

@@ -6,16 +6,17 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Website.Controllers;
-using umbraco_clean_demo.Domain.Interfaces;
+using umbraco_clean_demo.Application;
+using umbraco_clean_demo.Application.Interfaces;
+using umbraco_clean_demo.Domain.Entities;
 using umbraco_clean_demo.Infrastructure.Utilities;
-using umbraco_clean_demo.Web.Models.ViewModels;
 
 namespace umbraco_clean_demo.Web.Controllers.Surface;
 
 [Route("migrate")]
 public class MigrateController : SurfaceController
 {
-	private readonly IMigrateRepository _repository;
+	private readonly ITranslationsService _service;
 	Commons cm = new Commons();	
 
 	public MigrateController(
@@ -25,10 +26,10 @@ public class MigrateController : SurfaceController
 		AppCaches appCaches, 
 		IProfilingLogger profilingLogger, 
 		IPublishedUrlProvider publishedUrlProvider,
-		IMigrateRepository repository) 
+		ITranslationsService service) 
 			: base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
 	{
-		_repository = repository;
+		_service = service;
 	}
 
 	[HttpGet]
@@ -45,9 +46,12 @@ public class MigrateController : SurfaceController
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> Submit(MigrateModel model)
 	{
+		var response = new Response<string>();
 		if (model != null)
 		{
-			await _repository.MigrateTest();
+			string connectionString = cm.GetConnectionString(model);
+			response = await _service.MigrateTranslations(connectionString);
+
 			return Json(new { success = true, message = "Migration successful!" });
 		}
 
