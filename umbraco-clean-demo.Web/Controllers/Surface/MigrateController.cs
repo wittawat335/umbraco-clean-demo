@@ -6,7 +6,6 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Website.Controllers;
-using umbraco_clean_demo.Application;
 using umbraco_clean_demo.Application.Interfaces;
 using umbraco_clean_demo.Domain.Entities;
 using umbraco_clean_demo.Infrastructure.Utilities;
@@ -36,7 +35,7 @@ public class MigrateController : SurfaceController
 	public IActionResult Index()
 	{
 		var model = new MigrateModel();
-		var listMigrate = cm.GetMigrateTypes();
+		var listMigrate = cm.GetListMigrate();
 		if (listMigrate.Count > 0) ViewBag.listMigrate = listMigrate;
 
 		return View(model);
@@ -46,16 +45,7 @@ public class MigrateController : SurfaceController
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> Submit(MigrateModel model)
 	{
-		var response = new Response<string>();
-		if (model != null)
-		{
-			string connectionString = cm.GetConnectionString(model);
-			response = await _service.MigrateTranslations(connectionString);
-
-			return Json(new { success = true, message = "Migration successful!" });
-		}
-
-		return Json(new { success = false, message = "Invalid data submitted." });
+		var response = await _service.MigrateTranslations(model); 
+		return Json(response);
 	}
-
 }

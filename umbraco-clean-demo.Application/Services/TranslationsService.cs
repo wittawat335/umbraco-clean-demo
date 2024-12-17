@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
-using Umbraco.Cms.Core.Models;
+﻿using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 using umbraco_clean_demo.Application.Interfaces;
+using umbraco_clean_demo.Domain.Entities;
 using umbraco_clean_demo.Domain.Entities.Kentico;
 using umbraco_clean_demo.Domain.Interfaces;
+using umbraco_clean_demo.Infrastructure.Utilities;
 
 namespace umbraco_clean_demo.Application.Services;
 
@@ -11,6 +12,7 @@ public class TranslationsService : ITranslationsService
 {
 	private readonly IGenericRepository<LocalizationModel> _repository;
 	private readonly ILocalizationService _localizationService;
+	Commons cm = new Commons();
 
 	public TranslationsService(IGenericRepository<LocalizationModel> repository, ILocalizationService localizationService)
 	{
@@ -18,10 +20,11 @@ public class TranslationsService : ITranslationsService
 		_localizationService = localizationService;
 	}
 
-	public async Task<Response<string>> MigrateTranslations(string connectionString)
+	public async Task<Response<string>> MigrateTranslations(MigrateModel model)
 	{
 		var response = new Response<string>();
-		var list = await _repository.GetAllAsync("View_CMS_ResourceString_Joined", connectionString);
+		string connectionString = cm.GetConnectionString(model);
+		var list = await _repository.GetAllAsync(Constants.K_Table.Localization, connectionString);
 		foreach (var item in list.Take(10)) 
 		{
 			// ค้นหา Dictionary Item ตาม Key
@@ -38,7 +41,8 @@ public class TranslationsService : ITranslationsService
 
 			if (language == null)
 			{
-				throw new Exception($"Language with ISO code '{item.CultureCode}' not found.");
+				response.message = $"Language with ISO code '{item.CultureCode}' not found.";
+				return response;
 			}
 
 			// เพิ่มหรืออัปเดต Translation
@@ -56,33 +60,10 @@ public class TranslationsService : ITranslationsService
 
 			// บันทึกการเปลี่ยนแปลง
 			_localizationService.Save(dictionaryItem);
-		}
-		
 
-		//if (existingValue == null)
-		//{
-		//	// หากยังไม่มีคีย์ ให้เพิ่มคีย์และค่าการแปล
-		//	_dictionaryService.SetValue(model.StringKey, new Dictionary<string, string>
-		//	{
-		//		{ model.LanguageCode, model.TranslationText }
-		//	});
-		//}
-		//else
-		//{
-		//	// หากมีคีย์อยู่แล้ว ให้อัปเดตคำแปลสำหรับภาษาที่กำหนด
-		//	if (existingValue is Dictionary<string, string> translations)
-		//	{
-		//		translations[model.LanguageCode] = model.TranslationValue;
-		//		_dictionaryService.SetValue(model.StringKey, translations);
-		//	}
-		//	else
-		//	{
-		//		// กรณีที่ค่าที่ดึงมาไม่ใช่ Dictionary<string, string>
-		//		response.Data = "The existing value is invalid.";
-		//		response.Success = false;
-		//		return response;
-		//	}
-		//}
+			response.isSuccess = true;
+			response.message = Constants.Message.MigrationSuccess;
+		}
 
 		return response;
 	}
