@@ -23,8 +23,7 @@ public class TranslationsService : ITranslationsService
 	public async Task<Response<string>> MigrateTranslations(MigrateModel model)
 	{
 		var response = new Response<string>();
-		string connectionString = cm.GetConnectionString(model);
-		var list = await _repository.GetAllAsync(Constants.K_Table.Localization, connectionString);
+		var list = await _repository.GetAllAsync(Constants.K_Table.Localization, cm.GetConnectionString(model));
 		foreach (var item in list.Take(10)) 
 		{
 			// ค้นหา Dictionary Item ตาม Key
