@@ -9,7 +9,7 @@ public static class Constants
 
 	public struct MigrateType
 	{
-		public const string Localization = "Localization";
+		public const string Translations = "Translations";
 		public const string User = "User";
 		public const string AddUserToSite = "AddUserToSite";
 		public const string Role = "Role";

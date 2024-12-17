@@ -6,6 +6,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Website.Controllers;
+using umbraco_clean_demo.Application;
 using umbraco_clean_demo.Application.Interfaces;
 using umbraco_clean_demo.Domain.Entities;
 using umbraco_clean_demo.Infrastructure.Utilities;
@@ -15,7 +16,8 @@ namespace umbraco_clean_demo.Web.Controllers.Surface;
 [Route("migrate")]
 public class MigrateController : SurfaceController
 {
-	private readonly ITranslationsService _service;
+	private readonly ITranslationsService _translationsService;
+	private readonly IPageTypeService _pageTypeService;
 	Commons cm = new Commons();	
 
 	public MigrateController(
@@ -25,10 +27,12 @@ public class MigrateController : SurfaceController
 		AppCaches appCaches, 
 		IProfilingLogger profilingLogger, 
 		IPublishedUrlProvider publishedUrlProvider,
-		ITranslationsService service) 
+		ITranslationsService translationsService,
+		IPageTypeService pageTypeService) 
 			: base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
 	{
-		_service = service;
+		_translationsService = translationsService;
+		_pageTypeService = pageTypeService;
 	}
 
 	[HttpGet]
@@ -45,7 +49,13 @@ public class MigrateController : SurfaceController
 	[ValidateAntiForgeryToken]
 	public async Task<IActionResult> Submit(MigrateModel model)
 	{
-		var response = await _service.MigrateTranslations(model); 
+		var response = model.SelectedMigrateType switch
+		{
+			Constants.MigrateType.Translations => await _translationsService.MigrateTranslations(model),
+			Constants.MigrateType.PageType => await _pageTypeService.MigratePageType(model),
+			_ => new Response<string>()
+		};
+
 		return Json(response);
 	}
 }

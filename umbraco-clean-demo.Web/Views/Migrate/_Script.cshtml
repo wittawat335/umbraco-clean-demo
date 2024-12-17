@@ -40,6 +40,18 @@
 		};
 	});
 
+	function Migrate() {
+		let msg = FormValidate();
+		if (msg != '') {
+			AlertError(msg);
+		}
+		else {
+			MigrateStart();
+			ShowBtnMigrate(false);
+			PostData();
+		}
+	}
+
 	function PostData() {
 		const url = '@Url.Content("~/migrate/submit")';
 		const data = $('#formMigrate').serializeObject();
@@ -67,6 +79,29 @@
 				console.log("Error: " + error);
 			}
 		});
+	}
+
+	function setValidateById(id) {
+		var result = false;
+		if ($('#' + id).val() == '') {
+			$('#' + id).css("border-color", "red");
+			result = true;
+		}
+
+		return result;
+	}
+
+	function FormValidate() {
+		var msg = '';
+		$(':input[type="text"], :input[type="password"], select').css("border-color", "");
+
+		if (setValidateById('SelectedMigrateType')) msg = 'The MigrateType field is required.';
+		if (setValidateById('ServerName')) msg = 'The ServerName field is required.';
+		if (setValidateById('DatabaseName')) msg = 'The DatabaseName field is required.';
+		if (setValidateById('DBUserName')) msg = 'The UserName field is required.';
+		if (setValidateById('DBPassword')) msg = 'The Password field is required.';
+
+		return msg;
 	}
 
 	function AlertSuccess(msg) {
