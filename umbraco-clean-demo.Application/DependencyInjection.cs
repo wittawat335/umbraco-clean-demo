@@ -21,6 +21,7 @@ public static class DependencyInjection
 		services.AddScoped<IPageTypeService, PageTypeService>();
 		services.AddScoped<ITranslationsService, TranslationsService>();
 		services.AddScoped<IUsersService, UsersService>();
+		services.AddScoped<IUserRoleService, UserRoleService>();
 
 		return services;
 	}
