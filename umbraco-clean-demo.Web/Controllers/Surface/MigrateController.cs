@@ -19,6 +19,7 @@ public class MigrateController : SurfaceController
 	private readonly ITranslationsService _translationsService;
 	private readonly IPageTypeService _pageTypeService;
 	private readonly IUserRoleService _userRoleService;
+	private readonly IUserGroupService _userGroupService;
 	Commons cm = new Commons();	
 
 	public MigrateController(
@@ -30,12 +31,14 @@ public class MigrateController : SurfaceController
 		IPublishedUrlProvider publishedUrlProvider,
 		ITranslationsService translationsService,
 		IUserRoleService userRoleService,
+		IUserGroupService userGroupService,
 		IPageTypeService pageTypeService) 
 			: base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
 	{
 		_translationsService = translationsService;
 		_pageTypeService = pageTypeService;
 		_userRoleService = userRoleService;
+		_userGroupService = userGroupService;
 	}
 
 	[HttpGet]
@@ -56,7 +59,7 @@ public class MigrateController : SurfaceController
 		{
 			Constants.MigrateType.Translations => await _translationsService.MigrateTranslations(model),
 			Constants.MigrateType.PageType => await _pageTypeService.MigratePageType(model),
-			Constants.MigrateType.Role => await _userRoleService.MigrateRoles(model),
+			Constants.MigrateType.Role => await _userGroupService.MigrateUserGroup(model),
 			Constants.MigrateType.User => await _userRoleService.MigrateUsers(model),
 			_ => new Response<string>()
 		};

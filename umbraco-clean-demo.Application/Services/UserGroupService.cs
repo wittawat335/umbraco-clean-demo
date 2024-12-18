@@ -13,7 +13,13 @@ public class UserGroupService(IUserGroupRepository _repository, IMapper _mapper)
 	{
 		var response = new Response<string>();
 		var list = await _repository.GetRoles(cm.GetConnectionString(model));
-		var userGroup = _mapper.Map<List<umbracoUserGroup>>(list);
+		if(list.Count > 0)
+		{
+			var userGroup = _mapper.Map<List<umbracoUserGroup>>(list);
+			response.isSuccess = await _repository.InsertUserGroup(userGroup);
+		}
+
+		if (response.isSuccess) response.message = Constants.Message.MigrationSuccess;
 
 		return response;
 	}
