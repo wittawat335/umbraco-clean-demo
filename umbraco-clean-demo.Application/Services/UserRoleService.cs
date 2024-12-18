@@ -14,10 +14,8 @@ public class UserRoleService(IUsersRepository _repository, IUserService _service
 	{
 		var response = new Response<string>();
 		var users = await _repository.GetUserRoles(cm.GetConnectionString(model));
-		foreach (var item in users)
-		{
-			
-		}
+		response.isSuccess = await _repository.InsertRoles(users);
+		if (response.isSuccess) response.message = Constants.Message.MigrationSuccess;
 
 		return response;
 	}

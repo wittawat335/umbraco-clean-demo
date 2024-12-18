@@ -13,6 +13,7 @@ public static class DependencyInjection
 		services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // Transient : ถูกสร้างใหม่ทุกครั้งที่มีการเรียกใช้งานภายในระบบ
 		services.AddScoped<IMigrateRepository, MigrateRepository>();
 		services.AddScoped<IUsersRepository, UsersRepository>();
+		services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 
 		return services;
 	}

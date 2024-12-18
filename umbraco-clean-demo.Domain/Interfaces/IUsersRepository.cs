@@ -6,5 +6,5 @@ public interface IUsersRepository
 {
 	Task<List<UserRoleModel>> GetUserRoles(string connectionString);
 	Task<List<UserRoleModel>> GetUserRolesFromView(string connectionString);
-	Task<List<UserRoleModel>> InsertRoles(List<UserRoleModel> model, string connectionString);
+	Task<bool> InsertRoles(List<UserRoleModel> model);
 }
