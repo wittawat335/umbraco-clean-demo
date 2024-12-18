@@ -6,6 +6,7 @@ public static class Constants
 	{
 		public const string Localization = "View_CMS_ResourceString_Joined";
 		public const string Users = "View_CMS_UserRole_Joined";
+		public const string UserSettingsRole = "View_CMS_UserSettingsRole_Joined";
 	}
 
 	public struct MigrateType

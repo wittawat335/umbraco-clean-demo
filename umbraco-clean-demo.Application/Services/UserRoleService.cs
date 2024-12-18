@@ -6,39 +6,37 @@ using umbraco_clean_demo.Infrastructure.Utilities;
 
 namespace umbraco_clean_demo.Application.Services;
 
-public class UserRoleService : IUserRoleService
+public class UserRoleService(IUsersRepository _repository, IUserService _service) : IUserRoleService
 {
-	private readonly IUsersRepository _userRepository;
-	private readonly IUserService _userService;
 	Commons cm = new Commons();
 
-	public UserRoleService(IUsersRepository userRepository, IUserService userService)
+	public async Task<Response<string>> MigrateRoles(MigrateModel model)
 	{
-		_userRepository = userRepository;
-		_userService = userService;
-	}
+		var response = new Response<string>();
+		var users = await _repository.GetUserRoles(cm.GetConnectionString(model));
+		foreach (var item in users)
+		{
+			
+		}
 
-	public Task<Response<string>> MigrateRoles(MigrateModel model)
-	{
-		throw new NotImplementedException();
+		return response;
 	}
 
 	public async Task<Response<string>> MigrateUsers(MigrateModel model)
 	{
 		var response = new Response<string>();
-		var users = await _userRepository.GetUserRoles(cm.GetConnectionString(model));
-
-		foreach (var u in users.Take(1).GroupBy(u => u.UserID))
+		var users = await _repository.GetUserRoles(cm.GetConnectionString(model));
+		foreach (var item in users.Take(10).GroupBy(u => u.UserID))
 		{
-			if (_userService.GetByUsername(u.First().UserName) == null)
+			if (_service.GetByUsername(item.First().UserName) == null)
 			{
-				var user = _userService.CreateUserWithIdentity(
-					u.First().UserName,
-					u.First().Email);
-
-				_userService.Save(user);
+				var user = _service.CreateUserWithIdentity(item.First().UserName, item.First().Email);
+				_service.Save(user);
 			}
 		}
+
+		response.isSuccess = true;
+		response.message = Constants.Message.MigrationSuccess;
 
 		return response;
 	}
