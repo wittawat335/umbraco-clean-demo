@@ -12,7 +12,6 @@ public static class DependencyInjection
 		services.AddSingleton<DapperContext>();
 		services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>)); // Transient : ถูกสร้างใหม่ทุกครั้งที่มีการเรียกใช้งานภายในระบบ
 		services.AddTransient(typeof(IMigrateRepository<>), typeof(MigrateRepository<>));
-		services.AddScoped<IUsersRepository, UsersRepository>();
 		services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 
 		return services;

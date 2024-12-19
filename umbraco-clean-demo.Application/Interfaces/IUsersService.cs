@@ -2,7 +2,7 @@
 
 namespace umbraco_clean_demo.Application.Interfaces;
 
-public interface IUserRoleService
+public interface IUsersService
 {
 	Task<Response<string>> MigrateUsers(MigrateModel model);
 }
