@@ -30,7 +30,7 @@ public class TranslationsService(IMigrateRepository<LocalizationModel> _reposito
 				return response;
 			}
 
-			var translation = dictionaryItem.Translations.FirstOrDefault(t => t.Language.Id == language.Id); // เพิ่มหรืออัปเดต Translation
+			var translation = dictionaryItem.Translations.FirstOrDefault(_ => _.Language.Id == language.Id); // เพิ่มหรืออัปเดต Translation
 			if (translation == null) // insert
 			{
 				translation = new DictionaryTranslation(language, item.TranslationText); // หากไม่มีการแปลสำหรับภาษานี้ให้เพิ่มการแปลใหม่
