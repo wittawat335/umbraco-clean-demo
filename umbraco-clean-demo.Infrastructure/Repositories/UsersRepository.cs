@@ -10,9 +10,10 @@ namespace umbraco_clean_demo.Infrastructure.Repositories;
 
 public class UsersRepository(IGenericRepository<UserRoleModel> _repository, DapperContext _context) : IUsersRepository
 {
-	public async Task<List<UserRoleModel>> GetUserRoles(string connectionString)
+	Commons cm = new Commons();
+	public async Task<List<UserRoleModel>> GetUserRoles(MigrateModel model)
 	{
-		using (var dbConnection = Connection(connectionString))
+		using (var dbConnection = Connection(cm.GetConnectionString(model)))
 		{
 			var result = await dbConnection.QueryAsync<UserRoleModel>(Constants.SQLCommand.GetUserRoles);
 

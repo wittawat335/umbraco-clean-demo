@@ -2,11 +2,12 @@
 using System.Data;
 using umbraco_clean_demo.Domain.Interfaces;
 using Dapper;
+using umbraco_clean_demo.Infrastructure.Utilities;
 namespace umbraco_clean_demo.Infrastructure.Repositories;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-
+	Commons cm = new Commons();
 	public GenericRepository()
 	{
 		

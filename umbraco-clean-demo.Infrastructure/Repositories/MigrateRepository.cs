@@ -1,16 +1,38 @@
-﻿using Dapper;
+﻿using System.Data.SqlClient;
+using System.Data;
+using Dapper;
 using umbraco_clean_demo.Domain.Entities;
 using umbraco_clean_demo.Domain.Interfaces;
 using umbraco_clean_demo.Infrastructure.DBContext;
+using umbraco_clean_demo.Infrastructure.Utilities;
 
 namespace umbraco_clean_demo.Infrastructure.Repositories;
-public class MigrateRepository : IMigrateRepository
+public class MigrateRepository<T>(DapperContext _context) : IMigrateRepository<T> where T : class
 {
-	private readonly DapperContext _context;
-
-	public MigrateRepository(DapperContext context)
+	Commons cm = new Commons();
+	
+	public Task<int> DeleteAsync(object id)
 	{
-		_context = context;
+		throw new NotImplementedException();
+	}
+
+	public async Task<List<T>> GetAllAsync(string tableName, MigrateModel model)
+	{
+		using (var dbConnection = Connection(cm.GetConnectionString(model)))
+		{
+			var result = await dbConnection.QueryAsync<T>($"SELECT * FROM {tableName}");
+			return result.ToList();
+		}
+	}
+
+	public Task<T> GetByIdAsync(object id)
+	{
+		throw new NotImplementedException();
+	}
+
+	public Task<int> InsertAsync(T entity)
+	{
+		throw new NotImplementedException();
 	}
 
 	public async Task MigrateTest()
@@ -30,4 +52,11 @@ public class MigrateRepository : IMigrateRepository
 			var model = await connection.QueryAsync<UmbracoLanguage>(query);
 		}
 	}
+
+	public Task<int> UpdateAsync(T entity)
+	{
+		throw new NotImplementedException();
+	}
+
+	private IDbConnection Connection(string connectionString) => new SqlConnection(connectionString);
 }

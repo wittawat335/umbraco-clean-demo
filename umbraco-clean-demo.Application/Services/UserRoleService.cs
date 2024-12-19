@@ -8,12 +8,10 @@ namespace umbraco_clean_demo.Application.Services;
 
 public class UserRoleService(IUsersRepository _repository, IUserService _service) : IUserRoleService
 {
-	Commons cm = new Commons();
-
 	public async Task<Response<string>> MigrateRoles(MigrateModel model)
 	{
 		var response = new Response<string>();
-		var users = await _repository.GetUserRoles(cm.GetConnectionString(model));
+		var users = await _repository.GetUserRoles(model);
 		response.isSuccess = await _repository.InsertRoles(users);
 		if (response.isSuccess) response.message = Constants.Message.MigrationSuccess;
 
@@ -23,7 +21,7 @@ public class UserRoleService(IUsersRepository _repository, IUserService _service
 	public async Task<Response<string>> MigrateUsers(MigrateModel model)
 	{
 		var response = new Response<string>();
-		var users = await _repository.GetUserRoles(cm.GetConnectionString(model));
+		var users = await _repository.GetUserRoles(model);
 		foreach (var item in users.Take(10).GroupBy(u => u.UserID))
 		{
 			if (_service.GetByUsername(item.First().UserName) == null)
