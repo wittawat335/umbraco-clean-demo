@@ -5,6 +5,6 @@ namespace umbraco_clean_demo.Domain.Interfaces;
 
 public interface IUserGroupRepository
 {
-	Task<List<Roles>> GetRoles(string connectionString);
+	Task<List<Roles>> GetRoles(MigrateModel model);
 	Task<bool> InsertUserGroup(List<umbracoUserGroup> model);
 }

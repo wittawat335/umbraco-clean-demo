@@ -8,15 +8,13 @@ namespace umbraco_clean_demo.Application.Services;
 
 public class UserGroupService(IUserGroupRepository _repository, IMapper _mapper) : IUserGroupService
 {
-	Commons cm = new Commons();
 	public async Task<Response<string>> MigrateUserGroup(MigrateModel model)
 	{
 		var response = new Response<string>();
-		var list = await _repository.GetRoles(cm.GetConnectionString(model));
+		var list = await _repository.GetRoles(model);
 		if(list.Count > 0)
 		{
-			var userGroup = _mapper.Map<List<umbracoUserGroup>>(list);
-			response.isSuccess = await _repository.InsertUserGroup(userGroup);
+			response.isSuccess = await _repository.InsertUserGroup(_mapper.Map<List<umbracoUserGroup>>(list));
 		}
 
 		if (response.isSuccess) response.message = Constants.Message.MigrationSuccess;
