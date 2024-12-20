@@ -8,7 +8,7 @@ public class MappingProfile : Profile
 	public MappingProfile()
 	{
 		// Map Role -> umbracoUserGroup
-		CreateMap<Role, umbracoUserGroup>()
+		CreateMap<Roles, umbracoUserGroup>()
 			.ForMember(dest => dest.userGroupAlias, opt => opt.MapFrom(src => src.RoleName.ToLower().Replace(" ", "_")))
 			.ForMember(dest => dest.userGroupName, opt => opt.MapFrom(src => src.RoleName))
 			.ForMember(dest => dest.createDate, opt => opt.MapFrom(src => src.RoleLastModified))
