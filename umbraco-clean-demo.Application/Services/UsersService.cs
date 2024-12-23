@@ -15,13 +15,16 @@ public class UsersService(IMigrateRepository<Users> _repository, IUserService _s
 		var response = new Response<string>();
 		var users = await _repository.GetAllAsync(Constants.K_Table.Users, model);
 		var umbracoUser = _mapper.Map<List<umbracoUser>>(users);
+		var listTest = new List<umbracoUser>();
 		foreach (var item in umbracoUser)
 		{
 			if (_service.GetByUsername(item.userName) == null)
 			{
 				var user = _service.CreateUserWithIdentity(item.userName, item.userEmail);
+				item.id = user.Id;
 				_service.Save(user);
 			}
+			listTest.Add(item);
 		}
 
 		response.isSuccess = true;

@@ -4,7 +4,6 @@ using umbraco_clean_demo.Domain.Interfaces;
 using umbraco_clean_demo.Infrastructure.DBContext;
 using Dapper;
 using umbraco_clean_demo.Domain.Entities.Kentico;
-using umbraco_clean_demo.Infrastructure.Utilities;
 
 namespace umbraco_clean_demo.Infrastructure.Repositories;
 
