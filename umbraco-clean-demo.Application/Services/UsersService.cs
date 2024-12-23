@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Infrastructure.Persistence.Dtos;
 using umbraco_clean_demo.Application.Interfaces;
 using umbraco_clean_demo.Domain.Entities;
 using umbraco_clean_demo.Domain.Entities.Kentico;
@@ -14,17 +15,22 @@ public class UsersService(IMigrateRepository<Users> _repository, IUserService _s
 	{
 		var response = new Response<string>();
 		var users = await _repository.GetAllAsync(Constants.K_Table.Users, model);
-		var umbracoUser = _mapper.Map<List<umbracoUser>>(users);
-		var listTest = new List<umbracoUser>();
+		var umbracoUser = _mapper.Map<List<UserDto>>(users);
 		foreach (var item in umbracoUser)
 		{
-			if (_service.GetByUsername(item.userName) == null)
+			if (_service.GetByUsername(item.UserName) == null)
 			{
-				var user = _service.CreateUserWithIdentity(item.userName, item.userEmail);
-				item.id = user.Id;
+				if (string.IsNullOrWhiteSpace(item.Email)) item.Email = "default_email@example.com";
+
+				var user = _service.CreateUserWithIdentity(item.UserName, item.Email);
+				user.CreateDate = item.CreateDate;
+				user.UpdateDate = item.UpdateDate;
+				user.LastLoginDate = item.LastLoginDate ;
+				user.Language = string.IsNullOrWhiteSpace(item.UserLanguage) ? "en-US" : item.UserLanguage;
+				user.IsApproved = item.Disabled;
+
 				_service.Save(user);
 			}
-			listTest.Add(item);
 		}
 
 		response.isSuccess = true;

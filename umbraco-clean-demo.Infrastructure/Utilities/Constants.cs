@@ -14,7 +14,7 @@ public static class Constants
 		public const string Translations = "Translations";
 		public const string User = "User";
 		public const string AddUserToSite = "AddUserToSite";
-		public const string Role = "Role";
+		public const string UserGroup = "UserGroup";
 		public const string DeleteCustomtable = "DeleteCustomtable";
 		public const string InsertCustomtable = "InsertCustomtable";
 		public const string PageType = "PageType";

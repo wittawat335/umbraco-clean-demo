@@ -59,7 +59,7 @@ public class MigrateController : SurfaceController
 		{
 			Constants.MigrateType.Translations => await _translationsService.MigrateTranslations(model),
 			Constants.MigrateType.PageType => await _pageTypeService.MigratePageType(model),
-			Constants.MigrateType.Role => await _userGroupService.MigrateUserGroup(model),
+			Constants.MigrateType.UserGroup => await _userGroupService.MigrateUserGroup(model),
 			Constants.MigrateType.User => await _usersService.MigrateUsers(model),
 			_ => new Response<string>()
 		};
