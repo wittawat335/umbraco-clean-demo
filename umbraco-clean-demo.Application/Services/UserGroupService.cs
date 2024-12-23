@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Umbraco.Cms.Infrastructure.Persistence.Dtos;
 using umbraco_clean_demo.Application.Interfaces;
 using umbraco_clean_demo.Domain.Entities;
 using umbraco_clean_demo.Domain.Interfaces;

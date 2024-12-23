@@ -5,4 +5,5 @@ namespace umbraco_clean_demo.Application.Interfaces;
 public interface IUsersService
 {
 	Task<Response<string>> MigrateUsers(MigrateModel model);
+	Task<Response<string>> AddUsersToUserGroup(MigrateModel model);
 }

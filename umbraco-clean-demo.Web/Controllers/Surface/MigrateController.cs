@@ -58,7 +58,7 @@ public class MigrateController : SurfaceController
 		var response = model.SelectedMigrateType switch
 		{
 			Constants.MigrateType.Translations => await _translationsService.MigrateTranslations(model),
-			Constants.MigrateType.PageType => await _pageTypeService.MigratePageType(model),
+			Constants.MigrateType.AddUser2UserGroup => await _usersService.AddUsersToUserGroup(model),
 			Constants.MigrateType.UserGroup => await _userGroupService.MigrateUserGroup(model),
 			Constants.MigrateType.User => await _usersService.MigrateUsers(model),
 			_ => new Response<string>()

@@ -9,8 +9,7 @@ namespace umbraco_clean_demo.Infrastructure.Repositories;
 
 public class UserGroupRepository(IMigrateRepository<Roles> _repository, DapperContext _context) : IUserGroupRepository
 {
-	public async Task<List<Roles>> GetRoles(MigrateModel model) 
-		=> await _repository.GetAllAsync("CMS_Role", model);
+	public async Task<List<Roles>> GetRoles(MigrateModel model) => await _repository.GetAllAsync("CMS_Role", model);
 
 	public async Task<bool> InsertUserGroup(List<umbracoUserGroup> model)
 	{

@@ -13,11 +13,11 @@ public static class Constants
 	{
 		public const string Translations = "Translations";
 		public const string User = "User";
-		public const string AddUserToSite = "AddUserToSite";
+		public const string AddUser2UserGroup = "AddUser2UserGroup";
 		public const string UserGroup = "UserGroup";
 		public const string DeleteCustomtable = "DeleteCustomtable";
 		public const string InsertCustomtable = "InsertCustomtable";
-		public const string PageType = "PageType";
+		public const string Content = "Content";
 	}
 
 	public struct Message

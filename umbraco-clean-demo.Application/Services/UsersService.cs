@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Persistence.Dtos;
 using umbraco_clean_demo.Application.Interfaces;
@@ -11,6 +12,25 @@ namespace umbraco_clean_demo.Application.Services;
 
 public class UsersService(IMigrateRepository<Users> _repository, IUserService _service, IMapper _mapper) : IUsersService
 {
+	public async Task<Response<string>> AddUsersToUserGroup(MigrateModel model)
+	{
+		var response = new Response<string>();
+		var users = await _repository.GetAllAsync("View_CMS_UserRole_Joined", model);
+		foreach (var item in users)
+		{
+			var user = _service.GetProfileByUserName(item.UserName);
+			var test = _service.GetUserById(user.Id);
+			if (test == null) throw new Exception("User not found");
+
+			var userGroup = _service.GetUserGroupByAlias("");
+			IReadOnlyUserGroup readOnlyUserGroup = (IReadOnlyUserGroup)userGroup;
+			test.AddGroup(readOnlyUserGroup);
+		}
+
+
+		return response;
+	}
+
 	public async Task<Response<string>> MigrateUsers(MigrateModel model)
 	{
 		var response = new Response<string>();
