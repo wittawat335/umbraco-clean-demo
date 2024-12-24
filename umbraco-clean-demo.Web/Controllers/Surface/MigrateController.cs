@@ -45,8 +45,7 @@ public class MigrateController : SurfaceController
 	public IActionResult Index()
 	{
 		var model = new MigrateModel();
-		var listMigrate = cm.GetListMigrate();
-		if (listMigrate.Count > 0) ViewBag.listMigrate = listMigrate;
+		ViewBag.listMigrate = cm.GetListMigrate();
 
 		return View(model);
 	}

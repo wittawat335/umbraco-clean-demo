@@ -10,23 +10,28 @@ using umbraco_clean_demo.Infrastructure.Utilities;
 
 namespace umbraco_clean_demo.Application.Services;
 
-public class UsersService(IMigrateRepository<Users> _repository, IUserService _service, IMapper _mapper) : IUsersService
+public class UsersService(IMigrateRepository<Users> _repository, IMigrateRepository<UserRole> _userRoleRepository,
+	IUserService _service, IMapper _mapper) : IUsersService
 {
 	public async Task<Response<string>> AddUsersToUserGroup(MigrateModel model)
 	{
 		var response = new Response<string>();
-		var users = await _repository.GetAllAsync("View_CMS_UserRole_Joined", model);
-		foreach (var item in users)
+		var users = await _userRoleRepository.GetAllAsync("View_CMS_UserRole_Joined", model);
+		foreach (var item in users.Where(_ => _.UserName != "administrator"))
 		{
-			var user = _service.GetProfileByUserName(item.UserName);
-			var test = _service.GetUserById(user.Id);
-			if (test == null) throw new Exception("User not found");
+			var profile = _service.GetProfileByUserName(item.UserName);
+			var user = _service.GetUserById(profile.Id);
+			if (user == null) response.message = "User not found";
 
-			var userGroup = _service.GetUserGroupByAlias("");
+			var userGroup = _service.GetUserGroupByAlias(item.RoleName);
 			IReadOnlyUserGroup readOnlyUserGroup = (IReadOnlyUserGroup)userGroup;
-			test.AddGroup(readOnlyUserGroup);
+			user.AddGroup(readOnlyUserGroup);
+
+			_service.Save(user);
 		}
 
+		response.isSuccess = true;
+		response.message = Constants.Message.MigrationSuccess;
 
 		return response;
 	}
