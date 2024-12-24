@@ -12,7 +12,6 @@ public class Commons
 		var list = new List<SelectListItem>{
 				new SelectListItem { Value = "Translations", Text = "Translations" },
 				new SelectListItem { Value = "User", Text = "Users" },
-				//new SelectListItem { Value = "Member", Text = "Member" },
 				new SelectListItem { Value = "UserGroup", Text = "UserGroups" },
 				new SelectListItem { Value = "AddUser2UserGroup", Text = "Add Users to UserGroups" },
 				//new SelectListItem { Value = "DeleteCustomtable", Text = "Delete Data Customtable" },
